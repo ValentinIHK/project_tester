@@ -29,13 +29,18 @@ def check_open_file():
 def start_script():
     arglist = ""
     errors = []
+
     for i in sys.argv[3:]:
         arglist += " " + i
     try:
         binary1 = "./" + sys.argv[1] + " " + arglist
         binary2 = "./" + sys.argv[2] + " " + arglist
-        output1 = subprocess.Popen([binary1], stdout=subprocess.PIPE, shell=True).communicate()[0].decode('ascii').split('\n')
-        output2 = subprocess.Popen([binary2], stdout=subprocess.PIPE, shell=True).communicate()[0].decode('ascii').split('\n')
+        try:
+            output1 = subprocess.Popen([binary1], stdout=subprocess.PIPE, shell=True).communicate()[0].decode('ascii').split('\n')
+            output2 = subprocess.Popen([binary2], stdout=subprocess.PIPE, shell=True).communicate()[0].decode('ascii').split('\n')
+        except CalledProcessError:
+            exit(84)
+
         for data_res1 in range(0, len(output1)):
             if output1[data_res1].replace("\t", "").replace(" ", "") != output2[data_res1].replace("\t", "").replace(" ", ""):
                 errors.append("binary 1 => " + output1[data_res1])
@@ -50,6 +55,7 @@ def start_script():
     except IOError:
         print("An error has occured during tests")
         exit(84)
+
 
 # Core
 
