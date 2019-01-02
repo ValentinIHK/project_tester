@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 
 import sys
 import os
@@ -33,12 +33,12 @@ def start_script():
     for i in sys.argv[3:]:
         arglist += " " + i
     try:
-        binary1 = "./" + sys.argv[1] + " " + arglist
-        binary2 = "./" + sys.argv[2] + " " + arglist
+        binary1 = "php " + sys.argv[1] + " " + arglist
+        binary2 = "php " + sys.argv[2] + " " + arglist
         try:
             output1 = subprocess.Popen([binary1], stdout=subprocess.PIPE, shell=True).communicate()[0].decode('ascii').split('\n')
             output2 = subprocess.Popen([binary2], stdout=subprocess.PIPE, shell=True).communicate()[0].decode('ascii').split('\n')
-        except CalledProcessError:
+        except subprocess.CalledProcessError:
             exit(84)
 
         for data_res1 in range(0, len(output1)):
